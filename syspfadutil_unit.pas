@@ -29,7 +29,7 @@
 
 }
 
-{$I ..\..\share_settings.inc}
+{$I ..\share_settings.inc}
 unit syspfadutil_unit;
 
 interface

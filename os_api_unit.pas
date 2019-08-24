@@ -20,7 +20,7 @@
 }
 
 {$WARN SYMBOL_PLATFORM OFF}
-{$I ..\..\share_settings.inc}
+{$I ..\share_settings.inc}
 unit os_api_unit;
 
 interface
