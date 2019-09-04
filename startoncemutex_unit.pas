@@ -17,7 +17,7 @@
 }
 
 {$I ..\share_settings.inc}
-unit startoncemutex;
+unit startoncemutex_unit;
 
 interface
 

@@ -5,7 +5,7 @@ program test_units_startmutex;
 
 uses
   SysUtils,
-  startoncemutex in '..\startoncemutex.pas';
+  startoncemutex_unit in '..\startoncemutex_unit.pas';
 
 // -> code that delphi's qa-tool should find, just to see if qa-tool is running. never call that!
 procedure qatool_test;
