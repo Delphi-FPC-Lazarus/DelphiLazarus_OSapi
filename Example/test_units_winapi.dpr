@@ -7,7 +7,8 @@ uses
   Vcl.Forms,
   Unit1 in 'Unit1.pas' {frmTest},
   os_api_unit in '..\os_api_unit.pas',
-  syspfadutil_unit in '..\syspfadutil_unit.pas';
+  syspfadutil_unit in '..\syspfadutil_unit.pas',
+  startoncemutex in '..\startoncemutex.pas';
 
 {$R *.res}
 
