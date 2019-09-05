@@ -473,7 +473,6 @@ begin
   }
   i := 1;
   repeat
-    ;
 
     case i of
       1, 11:

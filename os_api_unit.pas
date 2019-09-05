@@ -1058,7 +1058,7 @@ end;
 var
   ErrorMode: word;
 begin
-  DiskInDrive := false;
+  Result := false;
   try
     Drive := UpCase(Drive);
     if not CharinSet(Drive, ['A' .. 'Z']) then
