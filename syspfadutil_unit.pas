@@ -49,7 +49,7 @@ function GetStartDir: string;
 function IsStartDirUWP: Boolean;
 
 { Datenpfad für laufendes Programmes herausfinden -> startpfad_write }
-function GetdataDir(anwendungsname: string;
+function GetdataDir(const anwendungsname: string;
   erzeugenwennnichtvorhanden: Boolean): string;
 
 { Hilfsfunktionen, freigegeben da auch anderweitig verwendbar }
@@ -378,7 +378,7 @@ end;
 
 // =============================================================================
 
-function GetdataDir(anwendungsname: string;
+function GetdataDir(const anwendungsname: string;
   erzeugenwennnichtvorhanden: Boolean): string;
 {$IFDEF UNIX}
 var

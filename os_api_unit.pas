@@ -100,7 +100,7 @@ const
 function ShowProperties(hWndOwner: HWND; const FileName: string;
   Registerkarte: PChar): Boolean;
 function OpenWithDialog(const AFileName: String): Boolean;
-procedure CopyFilesToClipboard(FileList: string);
+procedure CopyFilesToClipboard(const FileList: string);
 
 function Benutzername: string;
 
@@ -110,14 +110,14 @@ function GetCPUCount: Integer;
 function GetUnix: Boolean;
 function GetWineAvail: Boolean;
 
-function Shellexecute_safe(Operation, FileName, Parameters, Directory: String;
+function Shellexecute_safe(const Operation:string; FileName, Parameters, Directory: String;
   ShowCmd: Integer): Integer;
 function GetConsoleOutput(Command: string; Output, Errors: TStream;
   Timeout: Cardinal = INFINITE): Boolean;
 function ExecProcess(Command: string; var Error: String;
   Timeout: Cardinal = INFINITE): Boolean;
 
-procedure OpenDirectory(Directory: string);
+procedure OpenDirectory(const Directory: string);
 
 function GetAppVersionStr(bFullBuild: Boolean): string;
 
@@ -126,11 +126,11 @@ function DiskInDrive(Drive: char): Boolean;
 
 procedure CopyDirContent(fromdir, todir: string);
 
-function FileSizeLarge(FileName: string): int64;
+function FileSizeLarge(const FileName: string): int64;
 
-function MoveFile_safe(fromfile, tofile: String; failifexists: Boolean)
+function MoveFile_safe(const fromfile, tofile: String; failifexists: Boolean)
   : Boolean;
-function CopyFile_safe(fromfile, tofile: String; failifexists: Boolean)
+function CopyFile_safe(const fromfile, tofile: String; failifexists: Boolean)
   : Boolean;
 
 {$IFDEF UNIX}
@@ -216,7 +216,7 @@ begin
 end;
 {$ENDIF}
 
-procedure CopyFilesToClipboard(FileList: string);
+procedure CopyFilesToClipboard(const FileList: string);
 {$IFDEF FPC}
 begin
   Assert(false, rsNotImplemented);
@@ -525,6 +525,7 @@ function GetConsoleOutput(Command: string; Output, Errors: TStream;
   var
     ErrMsg: TStringList;
   begin
+    ErrMsg:= nil;
     try
       ErrMsg := TStringList.Create;
       ErrMsg.Add(Msg);
@@ -905,7 +906,7 @@ begin
 end;
 {$ENDIF}
 
-function Shellexecute_safe(Operation, FileName, Parameters, Directory: String;
+function Shellexecute_safe(const Operation: String; FileName, Parameters, Directory: String;
   ShowCmd: Integer): Integer;
 {$IFDEF UNIX}
   function isurl(s: string): Boolean;
@@ -1000,7 +1001,7 @@ begin
 end;
 {$ENDIF}
 
-procedure OpenDirectory(Directory: string);
+procedure OpenDirectory(const Directory: string);
 {$IFDEF UNIX}
 begin
   OpenDocument(Directory);
@@ -1114,7 +1115,7 @@ begin
 end;
 {$ENDIF}
 
-function FileSizeLarge(FileName: string): int64;
+function FileSizeLarge(const FileName: string): int64;
 {$IFDEF UNIX}
 var
   F: TFileStream;
@@ -1151,7 +1152,7 @@ begin
 end;
 {$ENDIF}
 
-function MoveFile_safe(fromfile, tofile: String; failifexists: Boolean)
+function MoveFile_safe(const fromfile, tofile: String; failifexists: Boolean)
   : Boolean;
 begin
 {$IFDEF UNIX}
@@ -1174,7 +1175,7 @@ begin
 {$ENDIF}
 end;
 
-function CopyFile_safe(fromfile, tofile: String; failifexists: Boolean)
+function CopyFile_safe(const fromfile, tofile: String; failifexists: Boolean)
   : Boolean;
 begin
 {$IFDEF UNIX}
