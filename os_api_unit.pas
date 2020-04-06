@@ -113,7 +113,7 @@ function GetWineAvail: Boolean;
 function Shellexecute_safe(const Operation:string; FileName, Parameters, Directory: String;
   ShowCmd: Integer): Integer;
 function GetConsoleOutput(Command: string; Output, Errors: TStream;
-  Timeout: Cardinal = INFINITE): Boolean;
+  Timeout: Cardinal = INFINITE; StreamSizeLimit: DWord = MAXDWORD): Boolean;
 function ExecProcess(Command: string; var Error: String;
   Timeout: Cardinal = INFINITE): Boolean;
 
@@ -519,7 +519,7 @@ end;
 {$ENDIF}
 
 function GetConsoleOutput(Command: string; Output, Errors: TStream;
-  Timeout: Cardinal = INFINITE): Boolean;
+  Timeout: Cardinal = INFINITE; StreamSizeLimit: DWord = MAXDWORD): Boolean;
 
   procedure ErrorToStream(Msg: string; stream: TStream);
   var
@@ -641,7 +641,8 @@ end;
       while ReadFile(PipHandle, TransferBuffer[0], Length(TransferBuffer),
         NumberOfBytesRead, nil) do
       begin
-        stream.Write(TransferBuffer, NumberOfBytesRead);
+        if stream.Size < StreamSizeLimit then
+          stream.Write(TransferBuffer, NumberOfBytesRead);
       end;
       stream.Position := 0;
     end;
@@ -673,7 +674,8 @@ begin
   SecurityAttr.bInheritHandle := true;
   SecurityAttr.lpSecurityDescriptor := nil;
 
-  // Pipes erzeugen (Größenangabe ist nur ein Vorschlag für das Betriebssystem, muss aber groß genug sein. 0=defaul=scheint 4k zu sein
+  // Pipes erzeugen, Größenangabe ist nur ein Vorschlag für das Betriebssystem, muss aber groß genug sein sonst gibt es Probleme (0=defaul=scheint 4k zu sein)
+  // Die Pipes werden vom Betriebssystem gepuffert, belegen dort also ensprechend viel Speicher
   CreatePipe(PipeOutputRead, PipeOutputWrite, @SecurityAttr, MAXDWORD);
   CreatePipe(PipeErrorsRead, PipeErrorsWrite, @SecurityAttr, MAXDWORD);
 
@@ -716,6 +718,7 @@ begin
         bKill := true;
       end;
 
+      // zu diesem Zeitpunkt befinden sich die Daten im Betriebssystempuffer und müssen nun in MemoryStreams diser Anwendung gelesen werden
       // Pipes auslesen
       ReadPipeToStream(PipeErrorsRead, Errors);
       ReadPipeToStream(PipeOutputRead, Output);
